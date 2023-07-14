@@ -245,23 +245,4 @@ fitnessController.deleteUser = async (req, res) => {
 };
 
 
-// Update a user
-// fitnessController.updateUser = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { username } = req.body;
-//     const updatedUser = await User.findByIdAndUpdate(
-//       id,
-//       { username },
-//       { new: true }
-//     );
-//     if (!updatedUser) {
-//       return res.status(404).json({ error: 'User not found' });
-//     }
-//     res.status(200).json(updatedUser);
-//   } catch (error) {
-//     res.status(400).json({ error: 'Failed to update user' });
-//   }
-// };
-
 module.exports = fitnessController;
