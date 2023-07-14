@@ -54,7 +54,7 @@ const Login = () => {
   }
 
   return (
-    <div className="signup d-flex flex-column align-items-center justify-content-center text-center">
+    <div className="login">
       <form onSubmit={handleFormSubmit} className="signup-form d-flex flex-column">
         {/* --------------------email-------------------- */}
         <label htmlFor="email">Email</label>
@@ -70,7 +70,7 @@ const Login = () => {
         {/* -------------------- password-------------------- */}
         <label htmlFor="password">Password</label>
         <input
-          className="form-input"
+          className="login-form-input"
           value={formState.password}
           placeholder="********"
           name="password"

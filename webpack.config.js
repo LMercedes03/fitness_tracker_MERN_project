@@ -57,16 +57,32 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
+      
       {
         test: /.(css|scss)$/,
         exclude: /node_modules/,
         use: ['style-loader', 'css-loader'],
       },
+    
       {
         test: /\.css$/,
         include: /node_modules/,
         use: ['style-loader', 'css-loader', 'postcss-loader'],
-      }
+      },
+
+      {
+        test: /\.(png|jpe?g|gif|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              outputPath: 'images/',
+              publicPath: 'images/',
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [

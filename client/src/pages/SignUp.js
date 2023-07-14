@@ -61,8 +61,8 @@ export default function Signup() {
 
   return (
 
-    <div className="signup d-flex flex-column align-items-center justify-content-center text-center">
-      <form onSubmit={handleFormSubmit} className="signup-form d-flex flex-column">
+    <div className="signup">
+      <form onSubmit={handleFormSubmit} className="signup-form">
         {/* --------------------username-------------------- */}
         <label htmlFor="username">Username</label>
         <input

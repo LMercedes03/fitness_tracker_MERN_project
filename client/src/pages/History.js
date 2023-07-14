@@ -3,8 +3,7 @@ import { Navigate, Link } from 'react-router-dom';
 import { getMe } from '../utils/apiCaller';
 import Auth from '../utils/auth';
 import { formatDate } from '../utils/dateFormat';
-// import cardioIcon from '../assets/images/cardio.png';
-// import resistanceIcon from '../assets/images/resistance.png';
+
 
 const History = () => {
   const [userData, setUserData] = useState({});
@@ -95,19 +94,17 @@ const History = () => {
                 dateToDisplay = exercise.date;
               }
               return (
-                <div className='history-div d-flex' key={exercise._id}>
+                <div className='history' key={exercise._id}>
                   <div className='date d-flex align-items-center'>{dateToDisplay}</div>
                   <Link className='text-decoration-none' to={`/history/${exercise.type}/${exercise._id}`}>
                     {exercise.type === 'cardio' ? (
                       <div className="history-card cardio-title d-flex">
-                        {/* <div className='d-flex align-items-center'><img alt="cardio" src={cardioIcon} className="history-icon" /></div> */}
                         <div>
                           <p className='history-name'>{exercise.name}</p>
                           <p className='history-index'>{exercise.distance} miles </p>
                         </div>
                       </div>) : (
                       <div className="history-card resistance-title d-flex">
-                        {/* <div className='d-flex align-items-center'><img alt="resistance" src={resistanceIcon} className="history-icon" /></div> */}
                         <div >
                           <p className='history-name'>{exercise.name}</p>
                           <p className='history-index'>{exercise.weight} pounds </p>

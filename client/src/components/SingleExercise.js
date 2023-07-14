@@ -112,7 +112,7 @@ const SingleExercise = () => {
     <div className={type === 'cardio' ? 'single-cardio' : 'single-resistance'}>
 
       <h2 className="title text-center">History</h2>
-      <div className="single-exercise d-flex flex-column align-items-center text-center">
+      <div className="single-exercise">
         {type === 'cardio' && (
           <div className="cardio-div ">
             <div className="d-flex justify-content-center">
@@ -177,6 +177,6 @@ const SingleExercise = () => {
       </div>
     </div>
   );
-}
+};
 
 export default SingleExercise;

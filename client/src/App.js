@@ -10,6 +10,7 @@ import Cardio from './components/Cardio';
 import Resistance from './components/Resistance';
 import Signup from './pages/Signup';
 import SingleExercise from './components/SingleExercise';
+import logo from './images/logo.png';
 
 const App = () => {
 
@@ -22,8 +23,9 @@ const App = () => {
   ];
 
   return (
-    <div className="App">
+    <div className="app">
       <Nav pages={pages} />
+      <img src={logo} alt='stoic-logo' />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

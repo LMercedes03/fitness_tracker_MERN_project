@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import auth from '../utils/auth';
+import logo from '../images/logo.png';
 import './Nav.css';
 
 const Nav = ({ pages }) => {
@@ -11,7 +12,6 @@ const Nav = ({ pages }) => {
   return (
     <div className="nav-container">
       <div className="logo">
-        {/* <img /> Logo goes here */}
       </div>
       <div className="nav-links">
         {pages.map((page) => {

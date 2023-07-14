@@ -18,7 +18,7 @@ const Exercise = () => {
 
   return (
     <div>
-      <div className="exercise d-flex flex-column align-items-center">
+      <div className="exercise">
         <h2 className='title'>Add Exercise</h2>
         <div>
           <button className='cardio-btn d-flex flex-column  align-items-center justify-content-center' onClick={() => navigate('/exercise/cardio')}>
