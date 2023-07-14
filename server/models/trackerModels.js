@@ -1,32 +1,18 @@
 const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
-
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true,
-      minlength: 3,
-    },
-  },
-  {
-    timestamps: true,
-  }
-);
+const bcrypt = require('bcrypt');
 
 const cardioSchema = new Schema({
   type: {
     type: String,
     default: 'cardio',
-    required: true,
+    required: true
   },
   name: {
     type: String,
     required: true,
-    maxlength: 30,
+    maxlength: 30
   },
   distance: {
     type: Number,
@@ -42,7 +28,7 @@ const cardioSchema = new Schema({
   },
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true,
   },
 });
@@ -76,7 +62,7 @@ const resistanceSchema = new Schema({
   },
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true,
   },
 });
@@ -100,10 +86,56 @@ const exerciseSchema = new Schema({
   },
 });
 
+const userSchema = new Schema(
+  {
+    username: {
+      type: String,
+      trim: true,
+      unique: true,
+      required: 'Username is Required',
+    },
+    password: {
+      type: String,
+      trim: true,
+      required: 'Password is Required',
+      minlength: 6,
+    },
+    email: {
+      type: String,
+      unique: true,
+      match: [/.+@.+\..+/],
+    },
+    cardio: [{
+      type: Schema.Types.ObjectId,
+      ref: 'cardio'
+    }],
+    resistance: [{
+      type: Schema.Types.ObjectId,
+      ref: 'resistance'
+    }]
+  });
+
+// hash user password
+userSchema.pre('save', async function (next) {
+  if (this.isNew || this.isModified('password')) {
+    const saltRounds = 10;
+    this.password = await bcrypt.hash(this.password, saltRounds);
+  }
+
+  next();
+});
+
+// custom method to compare and validate password for logging in
+userSchema.methods.isCorrectPassword = async function (password) {
+  return bcrypt.compare(password, this.password);
+};
+
+
 const User = mongoose.model('user', userSchema);
 const Cardio = mongoose.model('cardio', cardioSchema);
 const Resistance = mongoose.model('resistance', resistanceSchema);
 const Exercise = mongoose.model('exercise', exerciseSchema);
+
 
 module.exports = {
   User,

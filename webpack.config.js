@@ -6,7 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: [
     // entry point of our app
-    './client/index.js',
+    './client/src/index.js',
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
@@ -61,12 +61,17 @@ module.exports = {
         test: /.(css|scss)$/,
         exclude: /node_modules/,
         use: ['style-loader', 'css-loader'],
+      },
+      {
+        test: /\.css$/,
+        include: /node_modules/,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
       }
     ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './client/index.html',
+      template: './client/src/index.html',
     }),
   ],
   resolve: {
