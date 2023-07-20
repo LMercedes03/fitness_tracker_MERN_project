@@ -130,6 +130,17 @@ userSchema.methods.isCorrectPassword = async function (password) {
   return bcrypt.compare(password, this.password);
 };
 
+// // For example, to populate cardio array:
+// userSchema.pre('findOne', function (next) {
+//   this.populate('cardio');
+//   next();
+// });
+
+// // Similarly, to populate resistance array:
+// userSchema.pre('findOne', function (next) {
+//   this.populate('resistance');
+//   next();
+// });
 
 const User = mongoose.model('user', userSchema);
 const Cardio = mongoose.model('cardio', cardioSchema);

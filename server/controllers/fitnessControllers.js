@@ -8,16 +8,6 @@ const fitnessController = {};
 
 // CARDIO EXERCISES
 
-// Get all cardio exercises
-fitnessController.getCardioExercises = async (req, res) => {
-  try {
-    const cardioExercises = await Cardio.find();
-    res.status(200).json(cardioExercises);
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to get cardio exercises' });
-  }
-};
-
 // Create a new cardio exercise
 fitnessController.createCardioExercise = async (req, res) => {
   try {
@@ -33,26 +23,23 @@ fitnessController.createCardioExercise = async (req, res) => {
       userId,
     });
 
-    res.status(201).json(cardio);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to create cardio input' });
-  }
-};
-
-// Update a cardio exercise
-fitnessController.updateCardioExercise = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, duration, distance } = req.body;
-    const updatedExercise = await Cardio.findByIdAndUpdate(
-      id,
-      { name, duration, distance },
+    // Add the cardio exercise to the user's cardio array
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: userId },
+      { $push: { cardio: cardio._id } },
       { new: true }
     );
-    res.status(200).json(updatedExercise);
+
+    // Check if the user exists and the update was successful
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Cardio created but no user with this id!' });
+    }
+
+    // Return the success message and the created cardio exercise data
+    res.status(201).json({ message: 'Cardio successfully created!', cardio });
   } catch (error) {
-    res.status(400).json({ error: 'Failed to update cardio exercise' });
+    console.error(error);
+    res.status(500).json({ error: 'Failed to create cardio exercise' });
   }
 };
 
@@ -93,18 +80,9 @@ fitnessController.createResistanceExercise = async (req, res) => {
   }
 };
 
-// Get all resistance exercises
-fitnessController.getResistanceExercises = async (req, res) => {
-  try {
-    const resistanceExercises = await Resistance.find();
-    res.status(200).json(resistanceExercises);
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to get resistance exercises' });
-  }
-};
 
 // Update a resistance exercise
-fitnessController.updateResistanceExercise = async (req, res) => {
+fitnessController.getResistanceExercisebyId = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, sets, reps } = req.body;
@@ -133,16 +111,32 @@ fitnessController.deleteResistanceExercise = async (req, res) => {
 
 // USERS
 
-// Get all users
-fitnessController.getUsers = async (req, res) => {
+// Get a single user by ID
+fitnessController.getSingleUser = async ({ user = null, params }, res) => {
   try {
-    const users = await User.find();
-    res.status(200).json(users);
+    const foundUser = await User.findOne({
+      $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
+    })
+      .select('-__v')
+      .populate('cardio', {
+        // Specify the fields you want to load
+        fields: ['name', 'distance', 'duration'],
+      })
+      .populate('resistance', {
+        // Specify the fields you want to load
+        fields: ['name', 'weight', 'sets', 'reps'],
+      });
+
+    if (!foundUser) {
+      return res.status(400).json({ message: 'Cannot find a user with this id!' });
+    }
+
+    res.json(foundUser);
   } catch (error) {
-    res.status(400).json({ error: 'Failed to get users' });
+    console.error(error);
+    res.status(500).json({ error: 'Failed to fetch user data' });
   }
 };
-
 
 // Create a new user
 fitnessController.createUser = async (req, res) => {
@@ -159,7 +153,7 @@ fitnessController.createUser = async (req, res) => {
     const user = new User({
       username,
       email,
-      password, // Note: You should hash the password before saving it
+      password, 
     });
     
     // Save the user to the database
@@ -197,50 +191,6 @@ fitnessController.loginUser = async (req, res) => {
   catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to log in' });
-  }
-};
-
-// Get a single user by ID
-fitnessController.getSingleUser = async ({ user = null, params }, res) => {
-  try {
-    const foundUser = await User.findOne({
-      $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
-    })
-      .select('-__v')
-      .populate('cardio')
-      .populate('resistance');
-
-    if (!foundUser) {
-      return res.status(400).json({ message: 'Cannot find a user with this id!' });
-    }
-
-    res.json(foundUser);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to fetch user data' });
-  }
-}
-;
-
-// Delete a user
-fitnessController.deleteUser = async (req, res) => {
-  try {
-    const { id } = req.params;
-      
-    // Check if the user exists in the database
-    const user = await User.findById(id);
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-
-    // Delete the user from the database
-    await User.findByIdAndDelete(id);
-    
-    res.status(200).json({ message: 'User deleted successfully' });
-  } 
-  catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Failed to delete user' });
   }
 };
 

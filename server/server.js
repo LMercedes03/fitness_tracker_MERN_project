@@ -8,14 +8,13 @@ app.use(express.json());
 app.use(cors());
 
 const MONGO_URI =
-  'mongodb+srv://lmercedes03:kWfRIlNOecaTp8rU@cluster0.wssqiab.mongodb.net/?retryWrites=true&w=majority"';
+'mongodb+srv://lmercedes03:kWfRIlNOecaTp8rU@cluster0.wssqiab.mongodb.net/fitness_tracker?retryWrites=true&w=majority';
 
 // Connect to MongoDB
 mongoose.connect(MONGO_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
-  dbName: 'fitness_tracker',
 })
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('Failed to connect to MongoDB:', err));

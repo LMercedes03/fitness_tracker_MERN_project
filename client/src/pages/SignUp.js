@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { createUser } from '../utils/apiCaller';
 import Auth from '../utils/auth';
-// import axios from 'axios';
 
 
 export default function Signup() {
