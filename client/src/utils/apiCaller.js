@@ -48,7 +48,7 @@ export const createResistance = (resistanceData, token) => {
 };
 
 export const getCardioById = (cardioId, token) => {
-  return fetch(`/api/cardio/${cardioId}`, {
+  return fetch(`'/api/cardio/:id/${cardioId}`, {
     headers: {
       'Content-Type': 'application/json',
       authorization: `Bearer ${token}`,
@@ -57,7 +57,7 @@ export const getCardioById = (cardioId, token) => {
 };
 
 export const getResistanceById = (resistanceId, token) => {
-  return fetch(`/api/resistance/${resistanceId}`, {
+  return fetch(`/api/resistance/:id/${resistanceId}`, {
     headers: {
       'Content-Type': 'application/json',
       authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ export const getResistanceById = (resistanceId, token) => {
 };
 
 export const deleteCardio = (cardioId, token) => {
-  return fetch(`/api/cardio/${cardioId}`, {
+  return fetch(`/api/cardio/:id/${cardioId}`, {
     method: 'DELETE',
     headers: {
       authorization: `Bearer ${token}`,
@@ -75,7 +75,7 @@ export const deleteCardio = (cardioId, token) => {
 };
 
 export const deleteResistance = (resistanceId, token) => {
-  return fetch(`/api/resistance/${resistanceId}`, {
+  return fetch(`/api/resistance/:id/${resistanceId}`, {
     method: 'DELETE',
     headers: {
       authorization: `Bearer ${token}`,
