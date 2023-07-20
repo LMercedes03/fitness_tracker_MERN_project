@@ -7,12 +7,12 @@ const auth = require('../utils/auth');
 // Cardio routes
 
 router.post('/cardio', auth.authMiddleware, fitnessController.createCardioExercise);
-// router.get('/cardio/:id', auth.authMiddleware, fitnessController.getCardioById);
+router.get('/cardio/:id', auth.authMiddleware, fitnessController.getCardioExerciseById);
 router.delete('/cardio/:id', auth.authMiddleware, fitnessController.deleteCardioExercise);
 
 // Resistance routes
 router.post('/resistance', auth.authMiddleware, fitnessController.createResistanceExercise);
-router.get('/resistance/:id', auth.authMiddleware, fitnessController.getResistanceExercisebyId);
+router.get('/resistance/:id', auth.authMiddleware, fitnessController.getResistanceExerciseById);
 router.delete('/resistance/:id', auth.authMiddleware, fitnessController.deleteResistanceExercise);
 
 // User routes

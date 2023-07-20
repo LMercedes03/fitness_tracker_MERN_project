@@ -2,10 +2,6 @@ import React from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import Auth from '../utils/auth';
 
-// import cardioIcon from "../assets/images/cardio.png"
-// import resistanceIcon from "../assets/images/resistance.png"
-
-
 const Exercise = () => {
   const loggedIn = Auth.loggedIn();
   const navigate = useNavigate();
@@ -22,13 +18,11 @@ const Exercise = () => {
         <h2 className='title'>Add Exercise</h2>
         <div>
           <button className='cardio-btn d-flex flex-column  align-items-center justify-content-center' onClick={() => navigate('/exercise/cardio')}>
-            {/* <img alt="cardio" src={cardioIcon} className="exercise-icon" /> */}
             Cardio
           </button>
         </div>
         <div>
           <button className='resistance-btn d-flex flex-column  align-items-center justify-content-center' onClick={() => navigate('/exercise/resistance')}>
-            {/* <img alt="resistance" src={resistanceIcon} className="exercise-icon" /> */}
             Resistance
           </button>
         </div>

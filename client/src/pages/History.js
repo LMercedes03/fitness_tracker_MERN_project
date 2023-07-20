@@ -15,60 +15,43 @@ const History = () => {
 
   // everytime loggedIn/userdata changes, the getuserdata runs
   useEffect(() => {
-    let isMounted = true; // Flag to track component mount status
-  
     const getUserData = async () => {
       try {
         //get token
         const token = loggedIn ? Auth.getToken() : null;
         if (!token) return false;
-  
+
         const response = await getMe(token);
-  
+
         if (!response.ok) {
           throw new Error('something went wrong!');
         }
-  
+
         const user = await response.json();
-        console.log('User data:', user);
-  
+
         // combine cardio and resistance data together
-        if (user.cardios && user.resistances) {
-          const cardios = user.cardios;
-          const resistances = user.resistances;
-          const exercise = cardios.concat(resistances);
-  
+        if (user.cardio && user.resistance) {
+          const cardio = user.cardio;
+          const resistance = user.resistance;
+          const exercise = cardio.concat(resistance);
+
           // sort exercise data by date
           exercise.sort((a, b) => {
             return new Date(b.date) - new Date(a.date);
           });
-  
+
           //format date in exercise data
           exercise.forEach(item => {
             item.date = formatDate(item.date);
           });
-  
-          // Update state only if the component is still mounted
-          if (isMounted) {
-            // Update the states
-            setUserData(user);
-            setExerciseData(exercise);
-          }
-        } else {
-          console.log('Cardio and Resistance data not found.');
+
+          setUserData(user);
+          setExerciseData(exercise);
         }
-      } catch (err) {
-        console.error(err);
-      }
+      } catch (err) { console.error(err); }
     };
-  
     getUserData();
-  
-    // Cleanup function
-    return () => {
-      isMounted = false; // Set the flag to false when the component is unmounted
-    };
-  }, [loggedIn]);
+  }, [loggedIn, userData]);
 
   function showMoreItems() {
     setDisplayedItems(displayedItems + 6);
@@ -80,9 +63,10 @@ const History = () => {
     return <Navigate to="/login" />;
   }
 
+
   return (
     <div className='history'>
-      <div className="d-flex flex-column align-items-center">
+      <div className="history-column">
         <h2 className='title'>History</h2>
         {exerciseData.length ?
           (<div className='history-data'>
@@ -95,16 +79,16 @@ const History = () => {
               }
               return (
                 <div className='history' key={exercise._id}>
-                  <div className='date d-flex align-items-center'>{dateToDisplay}</div>
+                  <div className='date'>{dateToDisplay}</div>
                   <Link className='text-decoration-none' to={`/history/${exercise.type}/${exercise._id}`}>
                     {exercise.type === 'cardio' ? (
-                      <div className="history-card cardio-title d-flex">
+                      <div className="history-card cardio-title">
                         <div>
                           <p className='history-name'>{exercise.name}</p>
                           <p className='history-index'>{exercise.distance} miles </p>
                         </div>
                       </div>) : (
-                      <div className="history-card resistance-title d-flex">
+                      <div className="history-card resistance-title">
                         <div >
                           <p className='history-name'>{exercise.name}</p>
                           <p className='history-index'>{exercise.weight} pounds </p>

@@ -6,8 +6,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import Auth from '../utils/auth';
 import { getCardioById, getResistanceById, deleteCardio, deleteResistance } from '../utils/apiCaller';
 import { formatDate } from '../utils/dateFormat';
-// import cardioIcon from '../assets/images/cardio-w.png';
-// import resistanceIcon from '../assets/images/resistance-w.png';
+
 
 const SingleExercise = () => {
   const { id, type } = useParams();
@@ -116,11 +115,6 @@ const SingleExercise = () => {
         {type === 'cardio' && (
           <div className="cardio-div ">
             <div className="d-flex justify-content-center">
-              {/* <img
-                alt="cardio"
-                src={cardioIcon}
-                className="exercise-form-icon"
-              /> */}
             </div>
             <p>
               <span>Date: </span> {cardioData.date}
@@ -145,11 +139,6 @@ const SingleExercise = () => {
         {type === 'resistance' && (
           <div className="resistance-div">
             <div className="d-flex justify-content-center">
-              {/* <img
-                alt="resistance"
-                src={resistanceIcon}
-                className="exercise-form-icon"
-              /> */}
             </div>
             <p>
               <span>Date: </span> {resistanceData.date}

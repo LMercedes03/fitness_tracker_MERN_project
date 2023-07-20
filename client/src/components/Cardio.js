@@ -78,8 +78,8 @@ const Cardio = () => {
 
   return (
     <div className="cardio">
-      <div className="d-flex flex-column align-items-center">
-        <h2 className="title text-center">Add Exercise</h2>
+      <div className="cario-column">
+        <h2 className="title">Add Exercise</h2>
         <form
           className="cardio-form"
           onSubmit={handleCardioSubmit}

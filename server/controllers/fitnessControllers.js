@@ -43,6 +43,24 @@ fitnessController.createCardioExercise = async (req, res) => {
   }
 };
 
+// Get cardio exercise data by ID
+fitnessController.getCardioExerciseById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const dbCardioData = await Cardio.findOne({ _id: id });
+
+    if (!dbCardioData) {
+      return res.status(404).json({ message: 'No cardio data found with this ID!' });
+    }
+
+    res.json(dbCardioData);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json(error);
+  }
+};
+
 // Delete a cardio exercise
 fitnessController.deleteCardioExercise = async (req, res) => {
   try {
@@ -73,7 +91,20 @@ fitnessController.createResistanceExercise = async (req, res) => {
       userId,
     });
 
-    res.status(201).json(resistance);
+    // Add the resistance exercise to the user's resistance array
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $push: { resistance: resistance._id } },
+      { new: true }
+    ).populate('resistance', 'name weight sets reps date'); // Populate the resistance array in the updated user data
+
+    // Check if the user exists and the update was successful
+    if (!updatedUser) {
+      return res.status(404).json({ message: 'Resistance created but no user with this id!' });
+    }
+
+    // Return the success message and the created resistance exercise data
+    res.status(201).json({ message: 'Resistance successfully created!', resistance });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to create resistance exercise' });
@@ -81,19 +112,21 @@ fitnessController.createResistanceExercise = async (req, res) => {
 };
 
 
-// Update a resistance exercise
-fitnessController.getResistanceExercisebyId = async (req, res) => {
+// Get resistance exercise by Id
+fitnessController.getResistanceExerciseById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, sets, reps } = req.body;
-    const updatedExercise = await Resistance.findByIdAndUpdate(
-      id,
-      { name, sets, reps },
-      { new: true }
-    );
-    res.status(200).json(updatedExercise);
+
+    const dbResistanceData = await Resistance.findOne({ _id: id });
+
+    if (!dbResistanceData) {
+      return res.status(404).json({ message: 'No resistance data found with this ID!' });
+    }
+
+    res.json(dbResistanceData);
   } catch (error) {
-    res.status(400).json({ error: 'Failed to update resistance exercise' });
+    console.error(error);
+    res.status(500).json(error);
   }
 };
 
@@ -118,14 +151,8 @@ fitnessController.getSingleUser = async ({ user = null, params }, res) => {
       $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
     })
       .select('-__v')
-      .populate('cardio', {
-        // Specify the fields you want to load
-        fields: ['name', 'distance', 'duration'],
-      })
-      .populate('resistance', {
-        // Specify the fields you want to load
-        fields: ['name', 'weight', 'sets', 'reps'],
-      });
+      .populate('cardio')
+      .populate('resistance')
 
     if (!foundUser) {
       return res.status(400).json({ message: 'Cannot find a user with this id!' });
