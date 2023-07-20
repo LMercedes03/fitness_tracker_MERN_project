@@ -6,7 +6,8 @@ const User = models.User;
 
 const fitnessController = {};
 
-// CARDIO EXERCISES
+
+// {/* --------------------------- CARDIO EXERCISES CONTROLLERS -------------------------------------- */} 
 
 // Create a new cardio exercise
 fitnessController.createCardioExercise = async (req, res) => {
@@ -44,14 +45,12 @@ fitnessController.createCardioExercise = async (req, res) => {
 };
 
 // Get cardio exercise data by ID
-fitnessController.getCardioExerciseById = async (req, res) => {
+fitnessController.getCardioExerciseById = async ({ params }, res) => {
   try {
-    const { id } = req.params;
-
-    const dbCardioData = await Cardio.findOne({ _id: id });
+    const dbCardioData = await Cardio.findOne({ _id: params.id });
 
     if (!dbCardioData) {
-      return res.status(404).json({ message: 'No cardio data found with this ID!' });
+      return res.status(404).json({ message: 'No cardio data found with this id!' });
     }
 
     res.json(dbCardioData);
@@ -62,18 +61,34 @@ fitnessController.getCardioExerciseById = async (req, res) => {
 };
 
 // Delete a cardio exercise
-fitnessController.deleteCardioExercise = async (req, res) => {
+fitnessController.deleteCardioExercise = async ({ params }, res) => {
   try {
-    const { id } = req.params;
-    await Cardio.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Cardio exercise deleted' });
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to delete cardio exercise' });
+    // Find and delete cardio data
+    const dbCardioData = await Cardio.findOneAndDelete({ _id: params.id });
+
+    if (!dbCardioData) {
+      return res.status(404).json({ message: 'No cardio data found with this id!' });
+    }
+
+    // Remove cardio on user data
+    const dbUserData = await User.findOneAndUpdate(
+      { cardio: params.id },
+      { $pull: { cardio: params.id } },
+      { new: true }
+    );
+
+    if (!dbUserData) {
+      return res.status(404).json({ message: 'Cardio deleted but no user with this id!' });
+    }
+
+    res.json({ message: 'Cardio successfully deleted!' });
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
 
 
-// RESISTANCE EXERCISES
+// {/* --------------------------- RESISTANCE EXERCISES CONTROLLERS -------------------------------------- */}
 
 // Create a new resistance exercise
 fitnessController.createResistanceExercise = async (req, res) => {
@@ -113,14 +128,12 @@ fitnessController.createResistanceExercise = async (req, res) => {
 
 
 // Get resistance exercise by Id
-fitnessController.getResistanceExerciseById = async (req, res) => {
+fitnessController.getResistanceExerciseById = async ({ params }, res) => {
   try {
-    const { id } = req.params;
-
-    const dbResistanceData = await Resistance.findOne({ _id: id });
+    const dbResistanceData = await Resistance.findOne({ _id: params.id });
 
     if (!dbResistanceData) {
-      return res.status(404).json({ message: 'No resistance data found with this ID!' });
+      return res.status(404).json({ message: 'No resistance data found with this id!' });
     }
 
     res.json(dbResistanceData);
@@ -131,18 +144,35 @@ fitnessController.getResistanceExerciseById = async (req, res) => {
 };
 
 // Delete a resistance exercise
-fitnessController.deleteResistanceExercise = async (req, res) => {
+fitnessController.deleteResistanceExercise = async ({ params }, res) => {
   try {
-    const { id } = req.params;
-    await Resistance.findByIdAndDelete(id);
-    res.status(200).json({ message: 'Resistance exercise deleted' });
-  } catch (error) {
-    res.status(400).json({ error: 'Failed to delete resistance exercise' });
+    // Find and delete resistance data
+    const dbResistanceData = await Resistance.findOneAndDelete({ _id: params.id });
+
+    if (!dbResistanceData) {
+      return res.status(404).json({ message: 'No resistance data found with this id!' });
+    }
+
+    // Remove resistance on user data
+    const dbUserData = await User.findOneAndUpdate(
+      { resistance: params.id },
+      { $pull: { resistance: params.id } },
+      { new: true }
+    );
+
+    if (!dbUserData) {
+      return res.status(404).json({ message: 'Resistance deleted but no user with this id!' });
+    }
+
+    res.json({ message: 'Resistance successfully deleted!' });
+  } catch (err) {
+    res.status(500).json(err);
   }
 };
 
 
-// USERS
+
+// {/* --------------------------- USER CONTROLLERS -------------------------------------- */} 
 
 // Get a single user by ID
 fitnessController.getSingleUser = async ({ user = null, params }, res) => {
@@ -152,7 +182,7 @@ fitnessController.getSingleUser = async ({ user = null, params }, res) => {
     })
       .select('-__v')
       .populate('cardio')
-      .populate('resistance')
+      .populate('resistance');
 
     if (!foundUser) {
       return res.status(400).json({ message: 'Cannot find a user with this id!' });
