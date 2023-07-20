@@ -4,7 +4,6 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import Auth from '../utils/auth';
 import { createCardio } from '../utils/apiCaller';
-// import cardioIcon from '../assets/images/cardio-w.png';
 
 const Cardio = () => {
   const [cardioForm, setCardioForm] = useState({
@@ -86,7 +85,6 @@ const Cardio = () => {
           onSubmit={handleCardioSubmit}
         >
           <div className="d-flex justify-content-center">
-            {/* <img alt="cardio" src={cardioIcon} className="exercise-form-icon" /> */}
           </div>
           <label>Name:</label>
           <input
