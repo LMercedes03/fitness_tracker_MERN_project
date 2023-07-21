@@ -78,18 +78,18 @@ const History = () => {
                 dateToDisplay = exercise.date;
               }
               return (
-                <div className='history' key={exercise._id}>
+                <div className='history-data-card' key={exercise._id}>
                   <div className='date'>{dateToDisplay}</div>
                   <Link className='text-decoration-none' to={`/history/${exercise.type}/${exercise._id}`}>
                     {exercise.type === 'cardio' ? (
                       <div className="history-card cardio-title">
-                        <div>
+                        <div className='history-info-card'>
                           <p className='history-name'>{exercise.name}</p>
                           <p className='history-index'>{exercise.distance} miles </p>
                         </div>
                       </div>) : (
                       <div className="history-card resistance-title">
-                        <div >
+                        <div className='history-info-card'>
                           <p className='history-name'>{exercise.name}</p>
                           <p className='history-index'>{exercise.weight} pounds </p>
                         </div>
