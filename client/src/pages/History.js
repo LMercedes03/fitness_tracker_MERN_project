@@ -3,6 +3,8 @@ import { Navigate, Link } from 'react-router-dom';
 import { getMe } from '../utils/apiCaller';
 import Auth from '../utils/auth';
 import { formatDate } from '../utils/dateFormat';
+import cardioIcon from '../images/cardio.png';
+import resistanceIcon from '../images/resistance.png';
 
 
 const History = () => {
@@ -65,11 +67,11 @@ const History = () => {
 
 
   return (
-    <div className='history'>
+    <div className="history">
       <div className="history-column">
-        <h2 className='title'>History</h2>
-        {exerciseData.length ?
-          (<div className='history-data'>
+        <h2 className="title">History</h2>
+        {exerciseData.length ? (
+          <div className="history-data">
             {/* map the exercise data  */}
             {exerciseData.slice(0, displayedItems).map((exercise) => {
               let dateToDisplay;
@@ -78,44 +80,66 @@ const History = () => {
                 dateToDisplay = exercise.date;
               }
               return (
-                <div className='history-data-card' key={exercise._id}>
-                  <div className='date'>{dateToDisplay}</div>
-                  <Link className='text-decoration-none' to={`/history/${exercise.type}/${exercise._id}`}>
+                // Wrap the entire div with the Link component
+                <Link
+                  key={exercise._id}
+                  className="link-div"
+                  to={`/history/${exercise.type}/${exercise._id}`}
+                >
+                  <div className="history-data-card">
+                    <div className="date">{dateToDisplay}</div>
                     {exercise.type === 'cardio' ? (
                       <div className="history-card cardio-title">
-                        <div className='history-info-card'>
-                          <p className='history-name'>{exercise.name}</p>
-                          <p className='history-index'>{exercise.distance} miles </p>
+                        <div className="history-info-card">
+                          <img alt="cardio" src={cardioIcon} className="cardio-icon" />
+                          <p className="history-name">{exercise.name}</p>
+                          <p className="history-index">{exercise.distance} miles </p>
                         </div>
-                      </div>) : (
+                      </div>
+                    ) : (
                       <div className="history-card resistance-title">
-                        <div className='history-info-card'>
-                          <p className='history-name'>{exercise.name}</p>
-                          <p className='history-index'>{exercise.weight} pounds </p>
+                        <div className="history-info-card">
+                          <img alt="resistance" src={resistanceIcon} className="resistance-icon" />
+                          <p className="history-name">{exercise.name}</p>
+                          <p className="history-index">{exercise.weight} pounds </p>
                         </div>
-                      </div>)}
-                  </Link>
-                </div>
+                      </div>
+                    )}
+                  </div>
+                </Link>
               );
             })}
             {/* show more items  */}
-            {exerciseData.length > displayedItems ?
-              (<div className='d-flex justify-content-center'>
-                <button className='show-btn' onClick={showMoreItems}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#000000" strokeWidth="2" strokeLinejoin="round"><path d="M6 9l6 6 6-6" /></svg>
+            {exerciseData.length > displayedItems ? (
+              <div className="show-more-content">
+                <button className="show-btn" onClick={showMoreItems}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="#000000"
+                    strokeWidth="2"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
                   Show More
                 </button>
-              </div>)
-              : null}
-          </div>)
-          :
-          (<div>
-            <h3 className='history-text'>No exercise data yet...</h3>
-            <Link to="/exercise"><button className='home-btn'>Add Exercise</button></Link>
+              </div>
+            ) : null}
           </div>
-          )}
-      </div >
-    </div >
+        ) : (
+          <div>
+            <h3 className="history-text">No exercise data yet...</h3>
+            <Link to="/exercise">
+              <button className="home-btn">Add Exercise</button>
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

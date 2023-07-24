@@ -11,28 +11,28 @@ body  {
 
         -webkit-animation-iteration-count: infinite;
         animation-iteration-count: infinite;
-
+        
         -webkit-animation-direction: alternate;
         animation-direction: alternate;              
-}
-
-@-webkit-keyframes slidein {
-from {background-position: top; background-size:3000px; }
-to {background-position: -100px 0px;background-size:2750px;}
-}
-
-@keyframes slidein {
-from {background-position: top;background-size:3000px; }
-to {background-position: -100px 0px;background-size:2750px;}
-
-}
-
-.app {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+      }
+      
+      @-webkit-keyframes slidein {
+        from {background-position: top; background-size:3000px; }
+        to {background-position: -100px 0px;background-size:2750px;}
+      }
+      
+      @keyframes slidein {
+        from {background-position: top;background-size:3000px; }
+        to {background-position: -100px 0px;background-size:2750px;}
+        
+      }
+      
+      .app {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
 
 .cardio {
   display: flex;
@@ -43,6 +43,38 @@ to {background-position: -100px 0px;background-size:2750px;}
   border-radius: 1rem;
   justify-content: space-between;
   align-items: center;
+}
+
+.cardio-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cardio-icon{
+  height: 3rem;
+  width: 3rem;
+}
+
+.resistance {
+  display: flex;
+  flex-direction: row;
+  background-color: rgba(55, 83, 132, 0.3);
+  border: 1px ;
+  padding: 1rem 2rem 1rem 2rem;
+  border-radius: 1rem;
+  justify-content: space-between;
+  align-items: center;
+}
+.resistance-btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resistance-icon{
+  height: 3rem;
+  width: 3rem;
 }
 
 .exercise {
@@ -88,9 +120,61 @@ to {background-position: -100px 0px;background-size:2750px;}
   width: fit-content;
 }
 
+
 .history-data-card {
   display: flex;
   flex-direction: row;
+  background-color: rgba(42, 122, 74, 0.7);
+  border: 1px;
+  border-radius: 1rem;
+  margin: 1rem;
+  padding: 1rem;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-data-card:active {
+  transform: translateY(2px); /* Move the div 2 pixels down when pressed */
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); /* Add a subtle box shadow when pressed */
+}
+
+.history-data-card:hover {
+  transform: scale(1.05); /* Increase the size of the div slightly on hover */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Add a stronger box shadow on hover */
+}
+
+.history-info-card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  text-align: left;
+  margin: 0%;
+}
+
+.date{
+  padding-right: 1rem;
+  margin: 0%;
+}
+
+.history-name{
+  padding-right: 1rem;
+}
+
+a:link {
+  text-decoration: none;
+  color: #000;
+}
+
+a:visited {
+  text-decoration: none;
+  color: #000;
+  
+}
+
+.single-resistance {
+  display: flex;
+  flex-direction: column;
   background-color: rgba(42, 122, 74, 0.7);
   border: 1px;
   border-radius: 1rem;
@@ -100,22 +184,21 @@ to {background-position: -100px 0px;background-size:2750px;}
   align-items: center;
 }
 
-.history-info-card {
+.single-cardio {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  background-color: rgba(42, 122, 74, 0.7);
+  border: 1px;
+  border-radius: 1rem;
+  margin: 1rem;
+  padding: 1rem;
   justify-content: space-between;
   align-items: center;
 }
 
-.resistance {
-  display: flex;
-  flex-direction: row;
-  background-color: rgba(55, 83, 132, 0.3);
-  border: 1px ;
-  padding: 1rem 2rem 1rem 2rem;
-  border-radius: 1rem;
-  justify-content: space-between;
-  align-items: center;
+.delete-btn{
+  background-color: rgb(210, 33, 33);
+  color: rgb(239, 233, 233);
 }
 
 .signup {
@@ -131,6 +214,14 @@ to {background-position: -100px 0px;background-size:2750px;}
   border-radius: 1rem;
   justify-content: space-between;
   align-items: center;
+}
+
+.err-message{
+  font-size: larger;
+  font-weight: bold;
+  margin-top: 1rem;
+  padding: 1rem;
+  color: red;
 }
 
 .login {
